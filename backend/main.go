@@ -1,17 +1,20 @@
 package main
 
 import (
-    "github.com/gin-gonic/gin"
-    "net/http"
+	"github.com/UsmanKhld/course-organizer/config"
+	"github.com/UsmanKhld/course-organizer/routes"
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
-    r := gin.Default()
+	config.ConnectDB() // ✅ initialize the Postgres connection
 
-    // Example route
-    r.GET("/ping", func(c *gin.Context) {
-        c.JSON(http.StatusOK, gin.H{"message": "pong"})
-    })
+	r := gin.Default()
+	r.GET("/ping", func(c *gin.Context) {
+		c.JSON(200, gin.H{"message": "pong"})
+	})
 
-    r.Run(":8080") // backend runs on localhost:8080
+	routes.CourseRoutes(r)
+	routes.UserRoutes(r)
+	r.Run(":8080")
 }
